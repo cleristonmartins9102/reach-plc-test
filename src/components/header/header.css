@@ -1,0 +1,34 @@
+.carousel .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 10px ;
+  height: 80px;
+  text-align: left;
+}
+
+.carousel .header .wrap_header_title p { 
+  font-size: 18px;
+  color: #eee;
+  font-weight: 800;
+}
+
+.carousel .carousel .header .wrap_header_title span { 
+  font-size: 13px;
+  color: #eee;
+}
+
+.carousel .header .wrap_arrows {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 110px;
+}
+
+.carousel .header .wrap_arrows svg {
+  cursor: pointer;
+}
+
+.carousel .header .wrap_arrows svg path { 
+  fill: #eee
+}

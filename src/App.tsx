@@ -1,34 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
+import { ImagesDataModel } from './data/model/images-data-model'
+import { SimpleArrow } from "./components/icons/simple_arrow"
+import { Header } from "./components/header/header"
+import { Footer } from './components/footer/footer'
+import { AxiosAdapter } from './infra/adapter/axios-adapter'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [imagesList, setImageList] = useState<ImagesDataModel[]>([])
+  const [countMovedSlides, setCountMovedSlides] = useState<number>(1)
+
+  useEffect(() => {
+    const httpRequest = new AxiosAdapter()
+    httpRequest.request<ImagesDataModel[]>({ method: AxiosAdapter.Method.get, url: 'https://content.inyourarea.co.uk/ext/search?type=technicalTaskCarouselItem&env=dev' }).then((response: ImagesDataModel[]) => {
+      const revertedImagesSequence = []
+      for (let count = response.length - 1; count >= 0; count--) {
+        revertedImagesSequence.push(response[count])
+      }
+      setImageList(revertedImagesSequence)
+    })
+  }, [])
+
+  const righArrowClickFunction = useCallback((): void => {
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const track = document.querySelector('.tracking') as any
+    if (track) {
+      const currentSlide = track!.querySelector('.currentSlide')
+      const rightSibling = currentSlide.nextElementSibling;
+      if (!rightSibling) return
+      track.style.transform = `translateX(-${parseInt(rightSibling.style.left.replace('px'))}px)`
+      currentSlide.classList.remove('currentSlide')
+      rightSibling.classList.add('currentSlide')
+      setCountMovedSlides(prev => prev + 1)
+
+    }
+  }, [countMovedSlides])
+
+  const leftArrowClickFunction = useCallback((): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const track = document.querySelector('.tracking') as any
+    if (track) {
+      const currentSlide = track!.querySelector('.currentSlide')
+      const leftSibling = currentSlide.previousElementSibling;
+      if (!leftSibling) return
+      track.style.transform = `translateX(-${parseInt(leftSibling.style.left.replace('px'))}px)`
+      currentSlide.classList.remove('currentSlide')
+      leftSibling.classList.add('currentSlide')
+      setCountMovedSlides(prev => prev - 1)
+    }
+  }, [countMovedSlides])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='carousel'>
+      <Header leftArrowClick={leftArrowClickFunction} rightArrowClick={righArrowClickFunction}/>
+      <div className="tracking">
+        <ul>
+          {
+            imagesList.map((imageData, idx) =>
+              <li key={idx} style={{'left': `${240 * idx + (idx === 0 ? 0 : 10 * idx)}px`}} className={`slide ${idx === 0 ? 'currentSlide' : ''}`}>
+                <img src={imageData.image.url} alt="" />
+                <div className="wrap_img_details">
+                  <div className='title'>
+                    {imageData.title}
+                  </div>
+                  <button className='read_more'>Read more <SimpleArrow/></button>
+                </div>
+              </li>
+            )
+          }
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <Footer />
+    </div>
   )
 }
 

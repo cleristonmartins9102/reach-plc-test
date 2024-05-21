@@ -1,0 +1,19 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  padding: 0 20px 0 20px;
+  height: 40px;
+  background-color: #071c29;
+}
+
+.footer img {
+  margin: 0 0 0 8px;
+  height: 20px;
+  font-size: 8px;
+}
+
+.footer span {
+  font-size: 11px;
+}
