@@ -1,5 +1,5 @@
-import { ArrowLeftLong } from "../arrow-left-long/arrow-left-long"
-import { ArrowRightLong } from "../arrow-right-long/arrow-right-long"
+import { ArrowLeftLong } from "../icons/arrow-left-long/arrow-left-long"
+import { ArrowRightLong } from "../icons/arrow-right-long/arrow-right-long"
 import './header.css'
 
 export const Header = (parameter: Header.Parameters) => {

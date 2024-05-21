@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { ImagesDataModel } from './data/model/images-data-model'
-import { SimpleArrow } from "./components/icons/simple_arrow"
+import { SimpleArrow } from "./components/icons/simple-arrow/simple_arrow"
 import { Header } from "./components/header/header"
 import { Footer } from './components/footer/footer'
 import { AxiosAdapter } from './infra/adapter/axios-adapter'
